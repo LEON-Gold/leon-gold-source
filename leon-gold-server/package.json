@@ -1,0 +1,10 @@
+{
+  "name": "leon-gold-server",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.5" },
+  "scripts": {
+    "start": "node --experimental-sqlite server.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

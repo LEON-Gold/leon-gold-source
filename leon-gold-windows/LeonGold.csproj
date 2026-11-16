@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Built on the Mac: `./build.sh` makes dist/LeonGold-Ledger.exe and dist/LeonGold-Hesab.exe.
+       .NET Framework 4.8 is part of Windows 10/11, so the exe needs nothing installed. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <ApplicationIcon>src/app.ico</ApplicationIcon>
+    <ApplicationManifest>src/app.manifest</ApplicationManifest>
+    <App Condition="'$(App)' == ''">LEDGER</App>
+    <DefineConstants>$(DefineConstants);$(App)</DefineConstants>
+    <AssemblyName Condition="'$(App)' == 'HESAB'">LeonGold-Hesab</AssemblyName>
+    <AssemblyName Condition="'$(App)' != 'HESAB'">LeonGold-Ledger</AssemblyName>
+    <RootNamespace>LeonGold</RootNamespace>
+    <Product>Leon Gold</Product>
+    <Company>Leon Gold</Company>
+    <Version>1.1.0</Version>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <IntermediateOutputPath>obj/$(App)/</IntermediateOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>bin/$(App)/</OutputPath>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src/*.cs" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2903.40" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Net.Http" />
+    <EmbeddedResource Include="src/app.ico" LogicalName="app.ico" />
+    <EmbeddedResource Include="$(NuGetPackageRoot)microsoft.web.webview2/1.0.2903.40/lib/net462/Microsoft.Web.WebView2.Core.dll" LogicalName="lib.Microsoft.Web.WebView2.Core.dll" />
+    <EmbeddedResource Include="$(NuGetPackageRoot)microsoft.web.webview2/1.0.2903.40/lib/net462/Microsoft.Web.WebView2.WinForms.dll" LogicalName="lib.Microsoft.Web.WebView2.WinForms.dll" />
+    <EmbeddedResource Include="$(NuGetPackageRoot)microsoft.web.webview2/1.0.2903.40/runtimes/win-x64/native/WebView2Loader.dll" LogicalName="native.x64.WebView2Loader.dll" />
+    <EmbeddedResource Include="$(NuGetPackageRoot)microsoft.web.webview2/1.0.2903.40/runtimes/win-x86/native/WebView2Loader.dll" LogicalName="native.x86.WebView2Loader.dll" />
+    <EmbeddedResource Include="$(NuGetPackageRoot)microsoft.web.webview2/1.0.2903.40/runtimes/win-arm64/native/WebView2Loader.dll" LogicalName="native.arm64.WebView2Loader.dll" />
+  </ItemGroup>
+</Project>

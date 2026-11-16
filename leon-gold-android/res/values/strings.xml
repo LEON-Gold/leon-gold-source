@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">حساب من · لئون گلد</string>
+  <!-- the panel address; change here and rebuild when the site moves to its own domain -->
+  <string name="start_url">https://leongold.net/hesab/</string>
+  <string name="offline">اینترنت وصل نیست. دوباره امتحان کن.</string>
+  <string name="retry">تلاش دوباره</string>
+</resources>

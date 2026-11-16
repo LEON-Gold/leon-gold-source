@@ -1,0 +1,179 @@
+import Image from "next/image";
+import Header from "@/components/Header";
+import { PricePanel, Ticker } from "@/components/Price";
+import OrderForm from "@/components/OrderForm";
+import Motion from "@/components/Motion";
+import InlineSvg from "@/components/InlineSvg";
+import HomeVitrin from "@/components/HomeVitrin";
+import Hallmark from "@/components/Hallmark";
+import Exhibits from "@/components/Exhibits";
+import Ruler from "@/components/Ruler";
+import HeroGL from "@/components/HeroGL";
+import Titles from "@/components/Titles";
+import { STORE_LD } from "@/lib/seo";
+import { EXHIBITS, HERO, LEDGER, MELT, SHOP, STEPS, WORKBOX } from "@/lib/content";
+import { fa } from "@/lib/fa";
+import AndroidApp from "@/components/AndroidApp";
+
+// the rosettes are files from public/gl/ (see lib/guilloche.ts): the hero's first one is put inline once loaded so it can engrave itself, the rest are images
+const Rosette = ({ className, draw }: { className: string; draw?: boolean }) => draw ? <InlineSvg className={className} src="/gl/rose-draw.svg" />
+  : <div className={className} aria-hidden><img src="/gl/rose.svg" alt="" width={400} height={400} loading="lazy" decoding="async" /></div>;
+const DEPTH = [9, 8, 7, 6, 5, 4, 3, 2, 1];
+
+export const metadata = { alternates: { canonical: "./" } };
+
+export default function Home() {
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(STORE_LD).replace(/</g, "\\u003c") }} />
+      <Header ledger={LEDGER} />
+      <Motion />
+      <Ruler />
+      <Titles />
+      <main id="top">
+        {/* the vault: rosettes turning behind the jewel, the name struck in gold leaf */}
+        <div className="hero-track">
+        <section className="hero" aria-labelledby="hero-h">
+          <HeroGL />
+          <Rosette className="hero-rose r1" draw />
+          <div className="hero-light" aria-hidden />
+          <Rosette className="hero-rose r2" />
+          <i className="corner c1" aria-hidden /><i className="corner c2" aria-hidden /><i className="corner c3" aria-hidden /><i className="corner c4" aria-hidden />
+          <div className="hero-in">
+            {/* the jewel, struck with a little depth: stacked copies behind it read as gold thickness when it turns */}
+            <div className="hero-jewel"><div className="jw">
+              {DEPTH.map((z) => <img key={z} className="jw-back" src="/leaf-hd.webp" alt="" width={265} height={490} fetchPriority="high" style={{ "--z": z } as React.CSSProperties} />)}
+              <img className="jw-face" src="/leaf-hd.webp" alt="" width={265} height={490} fetchPriority="high" />
+            </div></div>
+            <p className="hero-latin leaf leaf-sweep" lang="en" dir="ltr">LEON GOLD</p>
+            <h1 id="hero-h" className="hero-name leaf leaf-sweep">لئون گلد</h1>
+            <div className="hero-cta">
+              <a className="btn btn-gold" href="#order">ثبت سفارش</a>
+              <a className="btn btn-line" href="#price">قیمت امروز</a>
+            </div>
+          </div>
+          <p className="hero-cue" aria-hidden>پایین بکشید<i>↓</i></p>
+          <Hallmark className="hero-mark" />
+          <Ticker />
+        </section>
+        </div>
+
+        <section id="price" className="sec-paper" aria-labelledby="price-h">
+          <div className="sec-head" data-rise>
+            <h2 id="price-h"><i aria-hidden>◆</i>قیمت امروز</h2>
+            <p>نرخ تابلوی اتحادیه‌ی طلا و جواهر تهران، زنده. وزن و اجرت هر کار را بنویس تا قیمتش را همین حالا ببینی.</p>
+          </div>
+          <PricePanel />
+        </section>
+
+        {/* «ویترین» (owner, 2026-11-09): the real pieces, category by category, before the museum */}
+        <section id="vitrin" className="sec-paper sec-vitrin" aria-labelledby="vit-h">
+          <div className="sec-head" data-rise>
+            <h2 id="vit-h"><i aria-hidden>◆</i>ویترین</h2>
+            <p>کارهای لئون گلد، دسته به دسته؛ با وزن، عیار ۷۵۰ و قیمت همین ساعت. روی هر دسته بزنید.</p>
+          </div>
+          <HomeVitrin />
+        </section>
+
+        <section id="heritage" className="sec-vault heritage" aria-labelledby="her-h">
+          <Rosette className="her-rose" />
+          <div className="sec-head on-dark" data-rise>
+            <h2 id="her-h" className="leaf">شیر، در طلای ایران</h2>
+            <p>لئون یعنی شیر. زرگرهای این سرزمین بیست‌وپنج قرن است شیر را در طلا می‌سازند؛ این‌ها چند تا از کارهایشان است که امروز در موزه‌ها مانده.</p>
+          </div>
+          <Exhibits items={EXHIBITS} />
+          <div className="her-more" data-rise>
+            <p>طلا از کجا می‌آید، عیار چطور شمرده می‌شود و زرگرهای ایران سه هزار سال با آن چه کرده‌اند.</p>
+            <a className="btn btn-line" href="museum/">ورود به موزه‌ی طلا</a>
+          </div>
+        </section>
+
+        <section className="sec-paper steps" aria-labelledby="steps-h">
+          <div className="sec-head" data-rise>
+            <h2 id="steps-h"><i aria-hidden>◆</i>از دیدن تا تحویل</h2>
+            <p>خرید از لئون گلد چهار قدم است.</p>
+          </div>
+          <ol className="step-row" data-rise>
+            {STEPS.map((s, i) => (
+              <li key={s.verb}>
+                <span className="step-n num" aria-hidden>{fa(i + 1)}</span>
+                <h3>{s.verb}</h3>
+                <p>{s.line}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className="sec-vault legacy" aria-labelledby="leg-h">
+          <div className="legacy-pic" data-rise>
+            <i className="corner c1" aria-hidden /><i className="corner c2" aria-hidden /><i className="corner c3" aria-hidden /><i className="corner c4" aria-hidden />
+            <Image src={WORKBOX.src} width={WORKBOX.w} height={WORKBOX.h} alt={WORKBOX.alt} sizes="(min-width: 900px) 40vw, 90vw" />
+          </div>
+          <div className="legacy-text" data-rise>
+            <h2 id="leg-h" className="leaf">لئون گلد، در تهران</h2>
+            <Hallmark className="legacy-mark" />
+            <div className="legacy-stats">
+              <div><b className="num">۷۵۰</b><span>عیار هر کار</span></div>
+              <div><b className="num">۲</b><span>حساب گرمی و ریالی</span></div>
+            </div>
+            <h3>برای مشتری</h3>
+            <p>هر کار وزن و عیار خودش را دارد و با نرخ همان ساعت اتحادیه قیمت می‌شود. فاکتور، وزن دقیق و عیار ۷۵۰ کنار هم تحویل داده می‌شوند.</p>
+            <h3>برای همکار</h3>
+            <p>فروش عمده به گرم و عیار ۷۵۰، با حساب گرمی و ریالی جدا؛ هر همکار صورت‌حساب و مانده‌ی خودش را دارد.</p>
+          </div>
+        </section>
+
+        <section id="wholesale" className="sec-paper wholesale" aria-labelledby="ws-h">
+          <figure className="ws-media" data-rise>
+            <video muted loop playsInline preload="none" data-lazy poster={MELT.poster} width={1280} height={720} aria-hidden="true">
+              <source src={MELT.src} type="video/webm" />
+            </video>
+            <figcaption>طلای مذاب هنگام سرد شدن بلوری می‌شود.</figcaption>
+          </figure>
+          <div className="ws-text" data-rise>
+            <h2 id="ws-h"><i aria-hidden>◆</i>همکار عمده‌اید؟</h2>
+            <p>خرید و فروش به گرم ۷۵۰، آبشده و ساخته. برای فهرست کارهای عمده و اجرت همکاری پیام بدهید؛ حساب هر همکار در دفتر لئون جدا نگه داشته می‌شود.</p>
+            <div className="ws-cta">
+              <a className="btn btn-ink" href={SHOP.telegram} target="_blank" rel="noopener">پیام در تلگرام</a>
+              <a className="btn-text" href={SHOP.phoneHref}>یا تماس: <span className="num" dir="ltr">{SHOP.phone}</span></a>
+            </div>
+          </div>
+        </section>
+
+        <section id="order" className="sec-vault order" aria-labelledby="order-h">
+          <Rosette className="order-rose" />
+          <div className="order-card paper" data-rise>
+            <i className="corner c1" aria-hidden /><i className="corner c2" aria-hidden /><i className="corner c3" aria-hidden /><i className="corner c4" aria-hidden />
+            <h2 id="order-h"><i aria-hidden>◆</i>ثبت سفارش</h2>
+            <p className="order-sub">بگو چه کاری می‌خواهی؛ در ساعت کاری تماس می‌گیریم.</p>
+            <OrderForm />
+          </div>
+          <div className="order-info" data-rise>
+            <div><small>تلفن</small><a className="num" href={SHOP.phoneHref} dir="ltr">{SHOP.phone}</a></div>
+            <div><small>شهر</small><span>{SHOP.city}</span></div>
+            <div><small>ساعت کاری</small><span>{SHOP.hours}</span></div>
+            <div><small>شبکه‌ها</small><span><a href={SHOP.instagram} dir="ltr">@{SHOP.instagramId}</a> · <a href={SHOP.telegram} target="_blank" rel="noopener">تلگرام</a></span></div>
+            <AndroidApp where="site" />
+          </div>
+        </section>
+      </main>
+
+      <footer className="foot">
+        <Rosette className="foot-rose" />
+        <img className="foot-jewel" src="/leaf.webp" alt="" width={265} height={490} />
+        <p className="foot-latin leaf" lang="en" dir="ltr">LEON GOLD</p>
+        <p className="foot-fa">طلا و جواهرات · تهران</p>
+        <nav className="foot-links" aria-label="پیوندها">
+          <a href="#price">قیمت امروز</a><a href="#vitrin">مجموعه</a><a href="#wholesale">همکاران</a><a href="#order">تماس</a>
+          <a href={LEDGER}>دفتر لئون</a>
+        </nav>
+        <p className="foot-credit">
+          آثار تاریخی از مجموعه‌های آزاد موزه‌ها:{" "}
+          {[HERO, ...EXHIBITS, WORKBOX, MELT].map((x, i) => (
+            <span key={x.src}>{i ? " · " : ""}<a href={x.page} dir="ltr">{x.credit}</a></span>
+          ))}
+        </p>
+      </footer>
+    </>
+  );
+}

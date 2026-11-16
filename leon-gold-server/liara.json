@@ -1,0 +1,10 @@
+{
+  "app": "leon-gold",
+  "platform": "node",
+  "port": 3000,
+  "node": { "version": "22" },
+  "build": {
+    "location": "iran"
+  },
+  "disks": [{ "name": "data", "mountTo": "data" }]
+}
